@@ -15,7 +15,6 @@ import static android.support.test.espresso.contrib.RecyclerViewActions.actionOn
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasShortClassName;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 
 /** Created by E560XT on 7/30/2018. */
@@ -32,7 +31,6 @@ public class IntentMainActivity {
 
     ViewInteraction recyclerView = onView(allOf(withId(R.id.recycler_view_tablet)));
     recyclerView.perform(actionOnItemAtPosition(0, click()));
-    intended(
-        allOf(hasComponent(hasShortClassName(".RecipeDetailActivity"))));
+    intended(allOf(hasComponent(hasShortClassName(".RecipeDetailActivity"))));
   }
 }
