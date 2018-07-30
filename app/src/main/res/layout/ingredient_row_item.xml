@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:bind="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="java.lang.String" />
+
+        <variable
+            name="ingredient"
+            type="com.udacity.app.bakingme.model.Ingredient" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_ingredient"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            bind:text="@{ingredient.ingredient}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_quantity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Apple" />
+
+        <TextView
+            android:id="@+id/tv_quantity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            bind:text="@{String.valueOf(ingredient.quantity)}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_measure"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="4" />
+
+        <TextView
+            android:id="@+id/tv_measure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            bind:text="@{ingredient.measure}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="pounds" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

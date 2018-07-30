@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/apk/res/android">
+
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/MyTextViewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_title_label"
+                android:text="@string/ingredients_label" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView_ingredients"
+                android:name="com.udacity.app.bakingme.StepFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layoutManager="LinearLayoutManager"
+                tools:context="com.udacity.app.bakingme.view.fragments.RecipeDetailFragment"
+                tools:listitem="@layout/step_row_item" />
+
+            <TextView
+                style="@style/MyTextViewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_title_label"
+                android:text="@string/steps_label" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView_steps"
+                android:name="com.udacity.app.bakingme.StepFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layoutManager="LinearLayoutManager"
+                tools:context="com.udacity.app.bakingme.view.fragments.RecipeDetailFragment"
+                tools:listitem="@layout/step_row_item" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">BakingMe</string>
+    <string name="title_activity_recipe_detail">RecipeDetailActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ingredients_label">Ingredients:</string>
+    <string name="steps_label">Steps:</string>
+    <string name="detail_step">Detail Step</string>
+    <string name="upps_you_arent_online">Upps, You arent online!</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+</resources>
