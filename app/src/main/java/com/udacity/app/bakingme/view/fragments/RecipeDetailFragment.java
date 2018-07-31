@@ -3,7 +3,9 @@ package com.udacity.app.bakingme.view.fragments;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,10 +31,13 @@ public class RecipeDetailFragment extends Fragment {
 
   public static final String ARG_RECIPE = "recipe";
   private static final String ARG_COLUMN_COUNT = "column-count";
+  public static final String SCROLLY = "scrolly";
   private int mColumnCount = 1;
   private OnStepFragmentInteractionListener mListenerOnStep;
   private OnIngredientFragmentInteractionListener mListenerOnIngredient;
   private Recipe recipe;
+  private NestedScrollView scrollview;
+  private float scrollviewScaleY;
 
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon
@@ -69,9 +74,17 @@ public class RecipeDetailFragment extends Fragment {
         DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_detail, container, false);
     View view = binding.getRoot();
 
+    scrollview = binding.scrollviewRecipeDetail;
+
     // Set recyclers and adapters
     setRecyclerViewSteps(binding, view);
     setRecyclerViewIngredients(binding, view);
+
+    if (savedInstanceState != null) {
+      scrollviewScaleY = savedInstanceState.getFloat(SCROLLY, 0);
+      scrollview.setScaleY(scrollviewScaleY);
+    }
+
     return view;
   }
 
@@ -143,5 +156,17 @@ public class RecipeDetailFragment extends Fragment {
   public interface OnIngredientFragmentInteractionListener {
     // TODO: Update argument type and name
     void onIngredientFragmentClickItem(Ingredient item);
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putFloat(SCROLLY, scrollviewScaleY);
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    scrollviewScaleY = scrollview.getScaleY();
   }
 }

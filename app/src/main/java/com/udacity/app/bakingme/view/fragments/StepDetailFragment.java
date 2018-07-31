@@ -1,11 +1,15 @@
 package com.udacity.app.bakingme.view.fragments;
 
+// Some examples taken from here
+// https://gist.github.com/codeshifu/c26bb8a5f27f94d73b3a4888a509927c
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -40,6 +44,11 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
   private static final String ARG_STEP = "STEP";
   private static final String ARG_SIZE = "SIZE";
   private static final String ARG_INDEX = "INDEX";
+  public static final String EXO_POSITION = "exo_position";
+  public static final String EXO_AUTOPLAY = "autoplay";
+
+  private  long playbackPosition;
+  private  boolean autoPlay = false;
 
   private Step step;
   private int sizeListSteps;
@@ -95,11 +104,14 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
 
     // Initialize the player view.
     mPlayerView = binding.playerView;
-
     // Initialize the Media Session.
     initializeMediaSession();
-    // Initialize the player.
-    initializePlayer(Uri.parse(step.getVideoURL()));
+
+    // if we have saved player state, restore it
+    if (savedInstanceState != null) {
+      playbackPosition = savedInstanceState.getLong(EXO_POSITION, 0);
+      autoPlay = savedInstanceState.getBoolean(EXO_AUTOPLAY, false);
+    }
 
     initializeFloatingActionButton();
 
@@ -138,7 +150,6 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
   public void onDetach() {
     super.onDetach();
     mListener = null;
-    releasePlayer();
   }
 
   private void initializeMediaSession() {
@@ -182,6 +193,8 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
 
       // Set the ExoPlayer.EventListener to this activity.
       mExoPlayer.addListener(this);
+      // resume
+      mExoPlayer.seekTo(playbackPosition);
 
       // Prepare the MediaSource.
       String userAgent =
@@ -194,7 +207,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
               null,
               null);
       mExoPlayer.prepare(mediaSource);
-      mExoPlayer.setPlayWhenReady(true);
+      mExoPlayer.setPlayWhenReady(autoPlay);
 
       if (step.getVideoURL().isEmpty())
         mPlayerView.setDefaultArtwork(
@@ -204,7 +217,9 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
 
   private void releasePlayer() {
     if (mExoPlayer != null) {
-      mExoPlayer.stop();
+      // save the player state before releasing its resources
+      playbackPosition = mExoPlayer.getCurrentPosition();
+      autoPlay = mExoPlayer.getPlayWhenReady();
       mExoPlayer.release();
       mExoPlayer = null;
     }
@@ -246,10 +261,10 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
   }
 
   @Override
-  public void onPause() {
-    super.onPause();
-    releasePlayer();
-    mMediaSession.setActive(false);
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putLong(EXO_POSITION, playbackPosition);
+    outState.putBoolean(EXO_AUTOPLAY, autoPlay);
   }
 
   private void hideActionBarIfLandscape() {
@@ -289,5 +304,17 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     void onPreviousStepClicked(int index);
 
     void onNextStepClicked(int index);
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    initializePlayer(Uri.parse(step.getVideoURL()));
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    releasePlayer();
   }
 }

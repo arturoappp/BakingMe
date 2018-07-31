@@ -48,9 +48,9 @@ public class RecipeDetailActivity extends AppCompatActivity
 
     if (null != savedInstanceState) {
       step = savedInstanceState.getParcelable(ARG_STEP);
+    } else {
+      setRecipeDetailFragment();
     }
-
-    setRecipeDetailFragment();
 
     if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
         && binding.content.fragmentStepDetail != null) {
@@ -87,9 +87,13 @@ public class RecipeDetailActivity extends AppCompatActivity
 
     if (!mTwoPane) {
       setTitle((item.getId() == 0 ? "" : item.getId() + "-") + item.getShortDescription());
-      changeFragment(StepDetailFragment.newInstance(item, recipe.getSteps().size(),recipe.getSteps().indexOf(item)));
+      changeFragment(
+          StepDetailFragment.newInstance(
+              item, recipe.getSteps().size(), recipe.getSteps().indexOf(item)));
     } else {
-      setFragmentDetail(StepDetailFragment.newInstance(item, recipe.getSteps().size(),recipe.getSteps().indexOf(item)));
+      setFragmentDetail(
+          StepDetailFragment.newInstance(
+              item, recipe.getSteps().size(), recipe.getSteps().indexOf(item)));
     }
   }
 
